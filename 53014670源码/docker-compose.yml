@@ -1,0 +1,60 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: scenic-guide-redis
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: scenic-guide-backend
+    env_file:
+      - ./backend/.env
+    environment:
+      APP_ENV: production
+      DEBUG: "false"
+      REDIS_HOST: redis
+      REDIS_URL: redis://redis:6379/0
+      USE_REDIS_SESSION: "true"
+      DATABASE_URL: sqlite+aiosqlite:///./data/scenic_guide.db
+      TTS_PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-http://localhost}
+      CORS_ORIGINS: ${PUBLIC_BASE_URL:-http://localhost}
+      FORCE_REINDEX: ${FORCE_REINDEX:-false}
+      RESET_INDEX: ${RESET_INDEX:-false}
+      HF_ENDPOINT: ${HF_ENDPOINT:-https://hf-mirror.com}
+      HUGGINGFACE_HUB_CACHE: /root/.cache/huggingface/hub
+      ANONYMIZED_TELEMETRY: "False"
+    volumes:
+      - backend_data:/app/data
+      - hf_cache:/root/.cache/huggingface
+      - ./示范景区公开资料包:/demo-materials:ro
+    depends_on:
+      redis:
+        condition: service_healthy
+    expose:
+      - "8000"
+    restart: unless-stopped
+
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    container_name: scenic-guide-nginx
+    ports:
+      - "${HTTP_PORT:-80}:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  backend_data:
+  redis_data:
+  hf_cache:

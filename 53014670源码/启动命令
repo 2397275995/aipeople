@@ -1,0 +1,30 @@
+# ===== 首次或更新官方资料后（在 backend 目录） =====
+cd C:\Users\Lenovo\Desktop\A5\backend
+python scripts/sync_official_materials.py --reset
+
+# ===== ① 必须先启动后端（其他端都依赖它） =====
+cd C:\Users\Lenovo\Desktop\A5\backend
+python main.py
+# 等到日志出现 "Application startup complete" 和 "faster-whisper 模型已就绪"
+
+# ===== ② 游客端（新开终端） =====
+$env:Path = "C:\Program Files\nodejs;" + $env:Path
+cd C:\Users\Lenovo\Desktop\A5\web-client
+npm install
+npm run dev
+# http://127.0.0.1:5173
+
+# ===== ③ 管理后台（再开一个终端，后端必须先跑着） =====
+$env:Path = "C:\Program Files\nodejs;" + $env:Path
+cd C:\Users\Lenovo\Desktop\A5\admin-web
+npm install
+npm run dev
+# http://127.0.0.1:5174
+# 若报 ECONNREFUSED 127.0.0.1:8000 → 说明后端没启动，先跑上面的 python main.py
+
+# ===== Docker 一键部署（可选，需足够磁盘空间） =====
+# cd C:\Users\Lenovo\Desktop\A5
+# .\deploy.ps1
+
+# 官方资料包位置（必须）：
+# C:\Users\Lenovo\Desktop\A5\示范景区公开资料包\

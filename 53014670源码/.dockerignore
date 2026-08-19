@@ -1,0 +1,15 @@
+node_modules
+**/node_modules
+dist
+**/dist
+.git
+*.log
+backend/data/chroma_db
+backend/data/tts_cache
+backend/data/scenic_guide.db
+backend/data/uploads
+**/.env
+!backend/.env.example
+admin-web/node_modules
+web-client/node_modules
+示范景区公开资料包

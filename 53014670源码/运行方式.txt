@@ -1,0 +1,121 @@
+灵山胜景 AI 数字人导览系统 - 运行方式
+
+一、方式一：直接运行后端可执行文件
+
+适用场景：
+- 你只想启动后端服务。
+- 前端页面由独立的 web-client 启动。
+
+步骤：
+
+1. 找到生成好的后端可执行文件。
+   推荐文件名：ScenicGuideBackend.exe
+
+2. 双击运行，或在 PowerShell 中执行：
+
+   .\ScenicGuideBackend.exe
+
+3. 观察控制台输出，若出现以下内容，表示启动成功：
+
+   Application startup complete.
+   Uvicorn running on http://0.0.0.0:8000
+
+4. 在浏览器打开：
+
+   http://localhost:8000/health
+
+   如果返回：
+
+   {"status":"ok"}
+
+   说明后端正常。
+
+5. 打开 API 文档：
+
+   http://localhost:8000/docs
+
+二、方式二：源码运行后端
+
+1. 打开 PowerShell。
+2. 进入 backend 目录：
+
+   cd backend
+
+3. 创建并激活虚拟环境：
+
+   python -m venv .venv
+   .\.venv\Scripts\Activate.ps1
+
+4. 安装依赖：
+
+   python -m pip install --upgrade pip -i https://pypi.tuna.tsinghua.edu.cn/simple
+   pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple --timeout 120 --retries 10 --resume-retries 10
+
+5. 设置 HuggingFace 镜像：
+
+   $env:HF_ENDPOINT="https://hf-mirror.com"
+
+6. 启动服务：
+
+   python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+三、方式三：运行前端
+
+1. 打开新的 PowerShell 窗口。
+2. 进入前端目录：
+
+   cd web-client
+
+3. 安装依赖：
+
+   npm install
+
+4. 设置前端后端地址环境变量或 .env 文件：
+
+   VITE_API_BASE_URL=http://localhost:8000
+
+5. 启动开发服务器：
+
+   npm run dev
+
+6. 浏览器访问：
+
+   http://localhost:5173
+
+四、推荐演示流程
+
+1. 先启动后端。
+2. 再启动前端。
+3. 打开浏览器访问前端主页。
+4. 点击输入框，先输入一个简单问题，例如：
+   - 灵山大佛有什么历史？
+   - 推荐一条两小时游览路线。
+   - 梵宫有什么看点？
+5. 观察 AI 回答、数字人状态、语音播放和口型变化。
+
+五、运行中常见情况
+
+1. 页面显示后端离线
+   说明后端服务没有正确启动，检查 8000 端口是否被占用，或健康检查是否成功。
+
+2. 数字人不显示
+   当前设计是首页不显示数字人，只有对话产生后才出现，这是正常逻辑。
+
+3. 没有声音
+   可能是浏览器自动播放限制，建议先点击页面一次再提问。
+
+4. 视频生成慢
+   讯飞数字人视频生成是异步流程，首次等待几十秒是正常的。
+
+5. 向量模型加载慢
+   首次运行会下载模型到缓存目录，后续会快很多。
+
+六、建议提交方式
+
+如果你需要交作业或发给别人，建议最终打包成一个 zip：
+- ScenicGuideBackend.exe
+- README.txt
+- 依赖说明.txt
+- 运行方式.txt
+- 介绍稿子.txt
+- 必要配置文件或示例配置文件

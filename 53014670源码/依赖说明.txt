@@ -1,0 +1,147 @@
+灵山胜景 AI 数字人导览系统 - 依赖说明
+
+一、系统环境依赖
+
+1. 操作系统
+   推荐 Windows 10 或 Windows 11。
+
+2. Python 环境
+   推荐 Python 3.10 或 Python 3.11。
+   如果使用已经生成的 ScenicGuideBackend.exe，一般不需要额外安装 Python。
+   如果使用源码启动，则需要安装 Python 并安装 backend/requirements.txt 中的依赖。
+
+3. Node.js 环境
+   推荐 Node.js 18 或以上。
+   前端源码运行和打包需要 Node.js 与 npm。
+
+4. 浏览器
+   推荐使用 Microsoft Edge 或 Google Chrome。
+   数字人本地语音讲解依赖浏览器 Web Speech API，不同浏览器对中文语音支持程度可能不同。
+
+二、后端 Python 主要依赖
+
+后端依赖文件位于：backend/requirements.txt
+
+主要依赖说明如下：
+
+1. FastAPI / Uvicorn
+   用于提供后端 HTTP API 服务。
+   主要接口包括健康检查、智能问答、语音识别、语音合成、数字人视频生成等。
+
+2. SQLAlchemy / aiosqlite / asyncpg / psycopg2-binary
+   用于数据库访问。
+   默认使用 SQLite，便于本地部署；也预留 PostgreSQL 支持。
+
+3. Redis
+   用于会话记忆缓存。
+   如果本地没有启动 Redis，系统会自动降级为内存会话存储，不影响基本演示。
+
+4. Pydantic / pydantic-settings
+   用于配置管理和接口数据校验。
+
+5. httpx / websocket-client
+   用于调用外部 HTTP 或 WebSocket 服务，包括大模型、讯飞服务等。
+
+6. chromadb
+   用于本地向量数据库，保存景区资料的向量索引。
+
+7. sentence-transformers / transformers / huggingface-hub / torch
+   用于文本向量化和语义检索。
+   默认嵌入模型为 BAAI/bge-m3。
+   首次运行可能需要下载模型文件。
+
+8. faster-whisper
+   用于本地语音识别能力。
+   如果模型下载较慢，可暂时关闭本地 ASR 或改用其他语音识别服务。
+
+9. edge-tts
+   用于文本转语音。
+
+10. PyPDF2 / python-docx / openpyxl / pandas
+    用于处理 PDF、Word、Excel 等资料文件，便于构建景区知识库。
+
+三、前端主要依赖
+
+前端依赖文件位于：web-client/package.json
+
+主要依赖说明如下：
+
+1. Vue 3
+   前端页面框架。
+
+2. Vite
+   前端开发服务器和构建工具。
+
+3. Pinia
+   前端状态管理，用于保存对话状态、最后一次回答、数字人状态等。
+
+4. Axios
+   用于前端请求后端 API。
+
+5. Leaflet
+   地图展示相关依赖，便于后续扩展景区地图和路线展示。
+
+6. Tailwind CSS / PostCSS / Autoprefixer
+   用于前端样式构建。
+
+7. flv.js / pixi-live2d-display / pixi.js
+   历史数字人方案中引入的依赖，目前核心展示已切换为更稳定的前端 SVG 数字人方案和讯飞视频生成方案，可后续按需要清理。
+
+四、外部服务依赖
+
+1. 大模型服务
+   当前 .env 中配置了 OpenAI 兼容接口，可接入 DeepSeek 等模型。
+   关键配置项包括：
+   - LLM_PROVIDER
+   - LLM_API_KEY
+   - LLM_API_BASE
+   - LLM_MODEL
+
+2. 讯飞数字人服务
+   用于数字人视频生成能力。
+   关键配置项包括：
+   - XFYUN_API_KEY
+   - XFYUN_API_SECRET
+   - XFYUN_APP_ID
+   - XFYUN_SCENE_ID
+   - XFYUN_AVATAR_ID
+   - XFYUN_VCN
+
+3. HuggingFace / 镜像站
+   用于下载向量模型、语音识别模型等。
+   国内网络建议设置：
+   - HF_ENDPOINT=https://hf-mirror.com
+
+五、源码运行安装命令
+
+后端依赖安装：
+
+cd backend
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple --timeout 120 --retries 10 --resume-retries 10
+
+前端依赖安装：
+
+cd web-client
+npm config set registry https://registry.npmmirror.com
+npm install
+
+六、常见依赖问题
+
+1. pip 下载中断
+   可以增加 --timeout、--retries 和 --resume-retries 参数后重新安装。
+
+2. HuggingFace 访问超时
+   设置环境变量：
+   $env:HF_ENDPOINT="https://hf-mirror.com"
+
+3. Redis 不可用
+   本地演示可以忽略，系统会降级为内存存储。
+
+4. 浏览器没有声音
+   请先点击页面一次再提问，或检查系统是否安装中文语音包。
+
+5. 讯飞接口失败
+   请检查 APIKey、APISecret、AppID 是否正确，以及账号是否开通对应服务。

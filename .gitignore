@@ -1,0 +1,66 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+.venv/
+venv/
+env/
+
+# Node.js
+node_modules/
+dist/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+build/
+
+# Data files (database, vector store, cache)
+**/data/scenic_guide.db
+**/data/chroma_db/
+**/data/tts_cache/
+**/data/uploads/
+**/data/*.db
+**/*.sqlite3
+
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Archives / packages
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Large media / binary
+*.exe
+*.pkg
+*.bin
+
+# PyInstaller build artifacts
+**/build/ScenicGuideBackend/
+**/localpycs/
+**/*.toc
+**/*.pyz
+**/base_library.zip
+**/xref-*.html
+**/warn-*.txt
+
+# Docker volumes / local data
+docker-volumes/
+.docker-data/

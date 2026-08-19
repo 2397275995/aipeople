@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply antialiased;
+  }
+
+  body {
+    @apply bg-[#f7f8fb] text-slate-900;
+    font-family: 'Noto Sans SC', system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .scenic-title {
+    font-family: 'Noto Serif SC', serif;
+  }
+
+  .msg-bot-deepseek {
+    @apply rounded-3xl rounded-tl-md border border-slate-200/80 bg-white text-slate-800;
+  }
+
+  .msg-user-deepseek {
+    @apply rounded-3xl rounded-tr-md bg-[#4d6bfe] text-white;
+  }
+
+  .avatar-drop-enter-active,
+  .avatar-drop-leave-active {
+    transition: opacity 260ms ease, transform 260ms ease;
+  }
+
+  .avatar-drop-enter-from,
+  .avatar-drop-leave-to {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.98);
+  }
+
+  .mouth-overlay-wrap {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    transition: opacity 180ms ease;
+  }
+
+  .mouth-overlay-shine {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.02) 40%, rgba(255,255,255,0.12));
+  }
+
+  .mouth-overlay-mouth {
+    position: absolute;
+    left: 50%;
+    bottom: 15%;
+    border-radius: 9999px;
+    transform-origin: center center;
+    background: radial-gradient(circle at 50% 45%, rgba(120, 34, 34, 0.95), rgba(60, 18, 18, 0.88));
+    box-shadow: 0 1px 0 rgba(255,255,255,0.12) inset, 0 0 12px rgba(68, 15, 15, 0.28);
+    transition: transform 70ms ease, width 70ms ease, height 70ms ease, opacity 70ms ease;
+  }
+
+  .mouth-overlay-beam {
+    position: absolute;
+    left: 50%;
+    bottom: 15%;
+    width: 76px;
+    height: 2px;
+    transform: translateX(-50%);
+    background: linear-gradient(to right, transparent, rgba(77,107,254,0.9), transparent);
+    filter: blur(0.2px);
+    transition: opacity 120ms ease;
+  }
+
+  .mouth-rh-rest { width: 10px; height: 2px; opacity: 0.08; }
+  .mouth-rh-A { width: 22px; height: 8px; opacity: 0.74; }
+  .mouth-rh-B { width: 30px; height: 12px; opacity: 0.86; }
+  .mouth-rh-C { width: 38px; height: 16px; opacity: 0.92; }
+  .mouth-rh-D { width: 46px; height: 20px; opacity: 0.98; }
+  .mouth-rh-E { width: 54px; height: 24px; opacity: 1; }
+  .mouth-rh-F { width: 62px; height: 28px; opacity: 1; }
+  .mouth-rh-G { width: 70px; height: 32px; opacity: 1; }
+
+  .mouth-pulse {
+    animation: mouthPulse 320ms ease-in-out infinite;
+  }
+
+  @keyframes mouthPulse {
+    0%, 100% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.12); }
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-slate-300 rounded-full hover:bg-slate-400;
+  }
+}

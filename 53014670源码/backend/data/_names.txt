@@ -1,0 +1,9 @@
+﻿python : Traceback (most recent call last):
+所在位置 C:\Users\Lenovo\AppData\Local\Temp\ps-script-0902c310-ce88-4d6f-94c5-3ff7601b387c.ps1:87 字符: 40
++ cd C:\Users\Lenovo\Desktop\A5\backend; python -c "
++                                        ~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "<string>", line 10, in <module>
+StopIteration
